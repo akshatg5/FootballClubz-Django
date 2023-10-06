@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-)61p2=u(ijxt^p+iomxa-l(*fo93eo*qos$n^hwagi1+-1cqq#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','footballclubzdjango.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','footballclubzdjango.onrender.com']
 
 
 # Application definition

@@ -1,0 +1,233 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block head %}
+    <title>{{club.club_name}}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <style>
+        .clubs-h{
+            margin-top: 2%;
+            width: 40%;
+            display: block;
+            padding: 1.2%;
+            margin-left: auto; 
+            margin-right: auto;
+            background-color: rgb(1, 19, 36);
+            text-align: center;
+            align-items: center;
+            position: relative;
+        }
+        .clubs-h::before {
+            content: "";
+            position: absolute;
+            top: 25px; 
+            left: -10px; 
+            right: -10px; 
+            bottom: -10px; 
+            background-color: #add8e6;
+            z-index: -1; 
+        }
+        .info-card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .info-card{
+            margin-top: 2.5%;
+            width: 40%;
+            display: block;
+            padding: 1.2%;
+            margin-left: auto; 
+            margin-right: auto;
+            background-color: #add8e6;
+            text-align: center;
+            position: relative;
+        }
+
+        .info-card p {
+            font-family: 'Mooli', sans-serif;
+            font-size: 1.2rem;
+            color: rgb(1, 19, 36);
+        }
+
+        .info-card::before{
+            content: "";
+            position: absolute;
+            top: 25px; 
+            left: -21px; 
+            right: 15px; 
+            bottom: -19px; 
+            background-color: rgb(1, 19, 36);
+            z-index: -1; 
+        }
+        .club-desc {
+            margin-top: 5%;
+            font-family: 'Mooli', sans-serif;
+            font-size: 1.2rem;
+            color: #add8e6;
+            width: 80%;
+            display: block;
+            padding: 1.2%;
+            margin-left: auto; 
+            margin-right: auto;
+            background-color: rgb(1, 19, 36);
+            text-align: center;
+            position: relative;
+        }
+        
+        .club-desc::before {
+            content: "";
+            position: absolute;
+            top: 25px; 
+            left: -10px; 
+            right: -10px; 
+            bottom: -10px; 
+            background-color: #add8e6; 
+            z-index: -1; 
+        }
+
+        .card-image {
+            margin-top: 2%;
+            margin-bottom: 0;
+            margin-right: auto;
+            margin-left: auto;
+            padding: 10px;
+            background-color: #f0f0f0; 
+            width: 100px; 
+            height: auto; 
+            box-sizing: content-box; 
+        }
+        
+        .card-image img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .like-btn {
+            text-align: center;
+        }
+
+        .btn-txt {
+            margin: 1%;
+            font-family: 'Mooli', sans-serif;
+            font-size: 1rem;
+            padding: 0.8%;
+            border: 4px solid rgb(1, 19, 36);
+        }
+
+        .btn-txt:hover{
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .clubs-h {
+                width: 80%; 
+            }
+        
+            .info-card {
+                width: 80%; 
+            }
+        
+            .club-desc {
+                width: 90%; 
+            }
+        
+            .card-image {
+                width: 60px; 
+            }
+        
+            .info-card-container {
+                width: 90%;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+<div class="clubs-h">
+    <h1>{{ club.club_name }}</h1>
+</div>
+<div>
+    <div class="card-image">
+        <img src="{{ club.club_logo.url }}" alt="{{ club.club_name }}">
+    </div>
+    {% if user.is_authenticated %}
+    <div class="like-btn">
+        <form action="{% url 'like_club' club.id %}" id="like-club-form" method="post">
+            {% csrf_token %}
+            <button type="submit" id="like-club-btn" class="btn-txt">Like Club</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% if club.added_by %}
+    <p style="text-align:center;">Club Information added by: <b>{{ club.added_by }}</b></p>
+    {% else %}
+    <p style="text-align:center;">Club Information added by: Admin</b></p>
+    {% endif %}
+
+<div class="info-card-container">
+    <div class="info-card">
+        <p>{{ club.club_country }}</p>
+    </div>
+    <div class="info-card">
+        <p>{{ club.club_stadium }}</p>
+    </div>
+</div>
+
+<div class="info-card-container">
+    <div class="info-card">
+        <p>Manager: {{ club.club_manager }}</p>
+    </div>
+    <div class="info-card">
+        <p>Net Worth: ${{ club.networth }} Billion</p>
+    </div>
+</div>
+<div>
+
+    <div class="club-desc">
+        <p>{{ club.club_desc }}</p>
+    </div>
+    <h1>Club Players:</h1>
+    <div class="club-desc" style="margin-bottom: 2%;">
+        <ul style="list-style: none;">
+            {% for player in club_players %}
+            <li>{{ player.first_name }} {{ player.last_name }} </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#like-club-form").on("submit",function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr("action");
+
+            $.ajax({
+                type : "POST",
+                url : url,
+                data : form.serialize(),
+                success : function(data) {
+                    if (data.liked) {
+                        $('#like-club-btn').text('Dislike Club')
+                        $('#like-club-btn').css("background","white")
+                    } else {
+                        $('#like-club-btn').text('Like Club')
+                        $('#like-club-btn').css("background","red")
+                    }
+                },
+                error: function() {
+                    alert("Error occured!")
+                }
+
+            })
+        })
+    })
+</script>
+{% include 'footer.html' %}
+{% endblock %}

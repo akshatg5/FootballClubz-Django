@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block head %}
+    <title>Register</title>
+    <!-- <link rel="stylesheet" href="static\styles.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <style>
+        .form-label {
+            font-family: 'Mooli', sans-serif;
+            font-size: 1.8rem;
+            color: #BEFFF7;
+        }
+
+        .form-control {
+            width: 100%; 
+            padding: 12px 20px; 
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        
+        .form-control:focus {
+            border-color: #007bff; 
+            outline: none; 
+        }   
+        
+        .btn {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+        <div class="background-img">
+            <a href="{% url 'clubs_list' %}" style="text-decoration: none;">
+                <h1>Football Clubz</h1>
+            </a>
+                <h1>Register</h1>
+
+                <div>
+                    <form action="{% url 'register' %}" method="post">
+                        {% csrf_token %}
+                        <div>
+                            <label for="username" class="form-label">Username:</label>
+                            <input type="text" name="username" autofocus class="form-control">
+                        </div>
+                        <div>
+                            <label for="username" class="form-label">Email:</label>
+                            <input type="email" name="email" autofocus class="form-control" placeholder="Email">
+                        </div>
+                        <div>
+                            <label for="" class="form-label">Password:</label>
+                            <input type="password" class="form-control" name="password" placeholder="password">
+                        </div>
+                        <div>
+                            <label for="" class="form-label">Confirm Password:</label>
+                            <input type="password" class="form-control" name="confirmation" placeholder="Confirm Password">
+                        </div>
+                        <input type="submit" value="Register" class="btn">
+                    </form>
+                    <p>Already Have an account?</p>
+                    <a href="{% url 'login' %}" class="form-label">Login Here</a>
+                </div>
+            </div>
+            {% include 'footer.html' %}
+{% endblock %}

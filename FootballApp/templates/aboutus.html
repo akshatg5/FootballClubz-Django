@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block head %}
+    <title>Football Clubz</title>
+    <!-- <link rel="stylesheet" href="static\styles.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+{% endblock %}
+
+
+{% block body %}
+        <div class="background-img">
+            <div class="title-logo">
+                <img src="{% static 'images/FC_transparent.png' %}" alt="FootballClubz Logo" class="logo">
+            <a href="{% url 'clubs_list' %}" style="text-decoration: none;">
+                <h1>Football Clubz</h1>
+            </a>
+        </div>
+            <h1>About Us:</h1>
+            {% if user.is_authenticated %}
+                <p>Hello,{{ user.username }}!</p>
+            {% endif %}
+            <p>
+                Welcome to Football Clubz!
+                <br><br>
+                Football Clubz is not just your typical football website. We take football analysis to a whole new level by offering a unique feature that allows you to compare any two football clubs of your choice. Our innovative platform utilizes cutting-edge algorithms to generate a detailed analysis and prediction for a hypothetical match-up between the two clubs you select.
+                <br><br>
+                Gone are the days of speculating about who would win in a face-off between your favorite teams. With Football Clubz, you can now uncover insightful statistics, explore head-to-head records, evaluate recent performances, and delve into key player insights. Our advanced data analysis techniques take into account various factors to provide you with an informed prediction on which team has a higher probability of winning in a current match-up.
+                <br><br>
+                But Football Clubz isn't just about predictions and statistics. We're dedicated to delivering a user-friendly experience that allows you to immerse yourself in the world of football clubs. Our platform is designed to be intuitive and easy to navigate, ensuring that you can effortlessly explore and compare clubs to satisfy your curiosity and feed your football passion.
+                <br><br>
+                Whether you're a devoted fan seeking in-depth information or simply curious about how your favorite team matches up against its rivals, Football Clubz is the ultimate destination. Join us on this exhilarating journey as we revolutionize the way football clubs are compared and analyzed. Get ready to experience football like never before!
+            </p>
+            </div>
+        {% include 'footer.html' %}
+{% endblock %}

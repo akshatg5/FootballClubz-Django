@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block head %}
+    <title>Football Clubz</title>
+    <!-- <link rel="stylesheet" href="static\styles.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+{% endblock %}
+
+
+{% block body %}
+        <div class="background-img">
+            <div class="title-logo">
+                    <img src="{% static 'images/FC_transparent.png' %}" alt="FootballClubz Logo" class="logo">
+                <a href="{% url 'clubs_list' %}" style="text-decoration: none;">
+                    <h1>Football Clubz</h1>
+                </a>
+            </div>
+            {% if user.is_authenticated %}
+                <p>Hello,{{ user.username }}!</p>
+            {% endif %}
+            <p>Welcome to Football Clubz, your ultimate destination for information on the most famous football clubs worldwide! Whether you're a passionate fan or a curious observer, this website offers a comprehensive overview of these iconic clubs that have left
+                an indelible mark on the beautiful game. With Football Clubz, you have the power to delve into the rich histories, rivalries, and achievements of these esteemed football institutions. From the legendary Manchester United to the illustrious
+                Real Madrid, we've curated a collection of the most renowned clubs for your exploration.
+                <br> <br> But that's not all,Football Clubz goes beyond providing mere facts and figures. Our unique feature allows you to compare any two football clubs of your choice. Simply enter the names of the two clubs you wish to compare, and
+                our cutting-edge algorithms will generate a detailed analysis and prediction for a hypothetical match-up between them. Discover insightful statistics, delve into head-to-head records, evaluate recent performances, and examine key player
+                insights.Our advanced data analysis techniques consider various factors to make an informed prediction on which team has a higher probability of winning in a current match-up. <br> <br> Football Clubz is not just a website; it's your go-to
+                resource for comprehensive football club information and exciting match predictions. Whether you're settling a friendly debate or seeking to enhance your football knowledge, we've got you covered. Join us at Football Clubz and immerse
+                yourself in the captivating world of football's most famous clubs. Explore, compare, and predict.All in one place. Get ready to experience the thrill and excitement of the beautiful game like never before!</p>
+            </div>
+
+{% include 'footer.html' %}
+{% endblock %}

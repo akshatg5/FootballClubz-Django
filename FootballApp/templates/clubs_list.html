@@ -1,0 +1,289 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block head %}
+    <title>Clubz</title>
+    
+    <style>
+        .clubs-h{
+            margin-top: 5%;
+            width: 40%;
+            display: block;
+            padding: 1.2%;
+            margin-left: auto; 
+            margin-right: auto;
+            background-color: rgb(1, 19, 36);
+            text-align: center;
+            position: relative;
+        }
+        .clubs-h::before {
+            content: "";
+            position: absolute;
+            top: 25px; 
+            left: -10px; 
+            right: -10px; 
+            bottom: -10px; 
+            background-color: #add8e6; /* Light blue color */
+            z-index: -1; /* Place it behind the main rectangle */
+        }
+        button {
+            background-color: rgb(1, 19, 36) ;
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            color: #add8e6;
+            width: 20%;
+            padding: 12px 20px;
+            margin: 4% auto;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: rgb(97, 170, 239);
+            color: #012e3c;
+            cursor: pointer;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            width: 50%; 
+            margin: 2% auto;
+        }
+        
+        .card-image {
+            padding: 10px;
+            background-color: #f0f0f0; 
+            width: 100px; 
+            height: auto; 
+            box-sizing: content-box; 
+        }
+        
+        .card-image img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .card-content {
+            flex: 2;
+            padding: 10px;
+        }
+        
+        .card-content h4 {
+            margin: 0;
+            font-size: 40px;
+            font-family: 'Mooli', sans-serif;
+        }
+        
+        .card-content p {
+            margin: 0;
+            font-family: 'Mooli', sans-serif;
+        }
+        .form-label {
+            font-family: 'Mooli', sans-serif;
+            font-size: 1.8rem;
+            color: #BEFFF7;
+        }
+
+        .form-control {
+            width: 100%; 
+            padding: 12px 20px; 
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        
+        .form-control:focus {
+            border-color: #007bff; 
+            outline: none; 
+        }  
+        
+        .container-nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            padding: 0.5%;
+            background-color: rgb(1, 19, 36);
+            color: #BEFFF7;
+            border: 1px solid #BEFFF7qqqqqq;
+            margin-bottom:1.2%;
+        }
+
+        @media (max-width: 768px) {
+            .clubs-h {
+                width: 80%; 
+            }
+        
+            button {
+                width: 40%; 
+                font-size: 14px; 
+            }
+        
+            .card {
+                width: 80%; 
+            }
+        
+            .card-content h4 {
+                font-size: 28px; 
+            }
+        
+            .form-label {
+                font-size: 1.6rem; 
+            }
+        
+            .form-control {
+                font-size: 14px; 
+            }
+        }
+    </style>
+    <!-- <link rel="stylesheet" href="static\styles.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+
+{% endblock %}
+
+{% block body %}
+
+
+<div>
+    <div class="clubs-h">
+        <h1>Football Clubs</h1>
+    </div>
+    {% for club in clubs %}
+    <div class="card">
+        <div class="card-image">
+            <img src="{{ club.club_logo.url }}" alt="{{ club.club_name }}">
+        </div>
+        <a href="{% url 'club_page' club_id=club.id %}" style="text-decoration: inherit; color:inherit;">
+        <div class="card-content">
+                <h4 style="color: rgb(1, 19, 36);">{{ club.club_name }}</h4>
+                <p>{{ club.club_country }} </p>
+            </div>
+        </a>
+        </div>
+        {% endfor %}
+        <div class="container-nav">
+            {% if clubs.has_previous %}
+            <div class="nav-btn">
+                <a href="?page={{clubs.previous_page_number}}" style="text-decoration: none; color:#add8e6;">Previous</a>
+            </div>
+            {% endif %}  {% if clubs.has_next %}
+            <div class="nav-btn">
+                <a href="?page={{clubs.next_page_number}}" style="text-decoration: none; color:#add8e6;">Next</a>
+            </div>
+            {% endif %}
+        </div>
+        {% if user.is_authenticated %}
+       <button onclick="showForm()">Add Club</button>
+       
+       <div id="addClubForm" style="display: none;">
+            <h1>
+                Add a New Club:
+            </h1>
+            <form id="clubForm" style="margin-left:5%; margin-right:5%;">
+                {% csrf_token %}
+                <div>
+                    <label for="clubName" class="form-label">Club Name:</label>
+                    <input type="text" name="clubName" id="clubName" required class="form-control">
+                </div>
+                <div>
+                    <label for="clubCountry" class="form-label">Club Country:</label>
+                    <input type="text" name="clubCountry" id="clubCountry" required class="form-control">
+                </div>
+                <div>
+                    <label for="clubStadium" class="form-label">Club Stadium:</label>
+                    <input type="text" name="clubStadium" id="clubStadium" required class="form-control">
+                </div>
+                <div>
+                    <label for="clubLogo" class="form-label">Club Logo:</label>
+                    <input type="file" name="clubLogo" id="clubLogo" accept="image/png" required class="form-control">
+                </div>
+                <div>
+                    <label for="clubDesc" class="form-label">Club Description and History:</label>
+                    <textarea name="clubDesc" id="clubDesc" cols="50" rows="5" required class="form-control"></textarea>
+                </div>
+                <div>
+                    <label for="clubManager" class="form-label">Club Manager:</label>
+                    <input type="text" name="clubManager" id="clubManager" required class="form-control">
+                </div>
+                <div>
+                    <label for="networth" class="form-label">Networth: (in $)</label>
+                    <input type="number" name="networth" id="networth" step="0.01" min="0" class="form-control">
+                </div>
+
+                <button type="button" onclick="submitClub()">Add Club</button>
+            </form>
+            <div id="error-message" style="color:red; background-color:black; font-size:50px; display:none;" ></div>
+       </div>
+
+       {% endif %}
+</div>
+
+<script>
+    function showForm() {
+        var form = document.getElementById('addClubForm');
+        if (form.style.display === 'none' || form.style.display === '') {
+            form.style.display = 'block';
+            console.log('AddClub Initiate');
+        } else {
+            form.style.display === 'none'
+        }
+    }
+
+    function submitClub() {
+        //getting the inputs from the form
+        console.log('FormSubmission Starts')
+        var form = document.getElementById('clubForm');
+        var formData = new FormData(form);
+
+        // making an AJAX request to send the data to the Django view. 
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST','/submit_club/',true);
+        xhr.setRequestHeader('X-CSRFToken',getCookie('csrftoken'));
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    //if the status code is success and info has passed
+                    console.log('Success 1')
+                    window.location.href = '/clubs';
+                } else if (xhr.status === 400) {
+                    //Handle errors
+                    var errorMessage = document.getElementById('error-message');
+                    errorMessage.style.display = 'block';
+                    errorMessage.innerHTML = JSON.parse(xhr.responseText).message;
+                } else {
+                    console.error('Form Submission Failed. try Again!')
+                }
+            }
+        }
+        xhr.send(formData);
+    }
+
+    // function to get CSRF token from cookies
+    function getCookie() {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i=0;i < cookies.length ; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0,name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
+{% include 'footer.html' %}
+{% endblock %}

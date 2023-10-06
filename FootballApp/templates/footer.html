@@ -1,0 +1,124 @@
+{% load static %}
+{% block head %}
+<style>
+body, p, ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Style the footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-logo img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.footer-logo h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links ul li {
+    margin-bottom: 10px;
+    font-family: 'Mooli', sans-serif;
+}
+
+.footer-links ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+}
+
+.social-media {
+    text-align: right;
+}
+
+.social-media h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-family: 'Mooli', sans-serif;
+}
+
+.social-media a {
+    text-decoration: none;
+    color: #fff;
+    margin-left: 10px;
+    font-family: 'Mooli', sans-serif;
+}
+
+.social-media img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s;
+}
+
+.social-media img:hover {
+    transform: scale(1.2);
+}
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-logo img {
+        margin-right: 0;
+    }
+
+    .footer-links ul li {
+        margin-bottom: 5px;
+    }
+
+    .social-media {
+        margin-top: 10px;
+    }
+}
+</style>
+{% endblock %}
+{% block body %}
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h1>FootballClubz</h1>
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="{% url 'index' %}" class="li_tags">Home</a></li>
+                    <li><a href="{% url 'clubs_list' %}" class="li_tags">Clubs</a></li>
+                    <li><a href="{% url 'aboutus' %}" class="li_tags">About Us</a></li>
+                    <li><a href="{% url 'contactus' %}" class="li_tags">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="social-media">
+                <h3>Follow Us</h3>
+                <a href="https://github.com/akshatg5"><img src="{% static 'images/github.png' %}" alt="Github"></a>
+                <a href="https://www.linkedin.com/in/akshat-girdhar-56a848206/"><img src="{% static 'images/linkedin.png' %}" alt="Twitter"></a>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}

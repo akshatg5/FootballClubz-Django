@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .navbar {
+            margin-top: 1.2%;
+            margin-left: auto;
+            margin-right: auto;
+            align-items: center;
+            max-width: 95%;
+            height: 80px;
+            font-family: 'Mooli', sans-serif;
+            background-color: #e3faf7;
+            position: relative;
+        }
+
+        .navbar::before {
+            content: "";
+            position: absolute;
+            top: 25px;
+            right: 20px; 
+            width: calc(100% - 10px); 
+            height: calc(100% - 10px); 
+            background-color: #072950; 
+            z-index: -1;
+        }
+        
+        .navbar ul {
+            overflow: auto;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .navbar li {
+            float: left;
+            list-style: none;
+            padding: 0.5% 0.5%;
+            margin: 1% 1%;
+        }
+        
+        .navbar li a {
+            font-size: 28px;
+            color: #6499E9;
+            padding: 2px 2px;
+            text-decoration: none;
+        }
+        
+        .navbar li a:hover {
+            font-size: 28px;
+            color: rgb(1, 48, 50);
+            padding: 2px 2px;
+            text-decoration: none;
+        }
+        
+        .search {
+            padding-top: 1.6%;
+            align-items: center;
+            padding-right: 100px;
+            float: right;
+        }
+        
+        .navbar input {
+            padding: 2% 20%;
+        }
+
+        .logo-nav{
+            width: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                height: auto;
+            }
+        
+            .navbar::before {
+                display: none; 
+            }
+        
+            .navbar ul {
+                flex-direction: column; 
+            }
+        
+            .navbar li {
+                float: none; 
+                margin: 1% 0; 
+                text-align: center;
+            }
+        
+            .navbar li a {
+                font-size: 18px; 
+                padding: 10px 0;
+            }
+        
+            .logo-nav {
+                width: 60px; 
+            }
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="{% url 'index' %}" class="li_tags">Home</a></li>
+                <li><a href="{% url 'clubs_list' %}" class="li_tags">Clubs</a></li>
+                <li><a href="{% url 'aboutus' %}" class="li_tags">About Us</a></li>
+                <li><a href="{% url 'contactus' %}" class="li_tags">Contact Us</a></li>
+                <li><a href="{% url 'players' %}" class="li_tags">Players</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}" class="li_tags">LogOut</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}" class="li_tags">Login</a></li>
+                {% endif %}
+                <img src="{% static 'images/FC_transparent.png' %}" alt="Home" class="logo-nav">
+            </ul>
+        </nav>
+    </header>
+
+
+</body>
+
+</html>

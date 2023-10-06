@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block head %}
+    <title>Football Clubz</title>
+    <!-- <link rel="stylesheet" href="static\styles.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+{% endblock %}
+
+
+{% block body %}
+        <div class="background-img">
+            <div class="title-logo">
+                <img src="{% static 'images/FC_transparent.png' %}" alt="FootballClubz Logo" class="logo">
+            <a href="{% url 'clubs_list' %}" style="text-decoration: none;">
+                <h1>Football Clubz</h1>
+            </a>
+        </div>
+            <h1>Contact Us:</h1>
+            {% if user.is_authenticated %}
+                <p>Hello,{{ user.username }}!</p>
+            {% endif %}
+            <p>
+                <br><br>
+            We value your feedback and are always eager to assist you. If you have any questions, comments, or suggestions, please don't hesitate to get in touch with us. We're here to help!
+            <br><br>
+            General Inquiries:
+            For general inquiries or assistance, please email us at <b> info@footballclubz.com.</b> We strive to respond to all emails within 24 hours.
+            <br><br>
+            Advertising and Partnership Opportunities:
+            If you are interested in advertising or exploring partnership opportunities with Football Clubz, please contact our team at <b> partnerships@footballclubz.com.</b> We're excited to discuss potential collaborations that align with our vision.
+            <br><br>
+            Technical Support:
+            Encountering technical issues on our website? Our dedicated support team is ready to assist you. Kindly reach out to us at <b>  
+            support@footballclubz.com</b>, and we'll work swiftly to resolve any problems you may be facing.
+            <br><br>
+            Media and Press Inquiries:
+            For media inquiries, interviews, or press-related matters, please direct your communication to <b>media@footballclubz.com</b>. We are more than happy to provide relevant information and collaborate with media outlets.
+            <br><br>
+            Social Media:
+            Stay connected with us on social media for the latest updates, news, and exciting content. Follow us on Twitter, Facebook, and Instagram to join our vibrant community and engage with other football enthusiasts.
+            <br><br>
+            Your feedback is invaluable to us in our continuous efforts to enhance and improve Football Clubz. We appreciate your time and look forward to hearing from you!
+            </p>
+            </div>
+            {% include 'footer.html' %}
+{% endblock %}

@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.db import IntegrityError
 from django.http import HttpResponse,HttpResponseRedirect,JsonResponse
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import FootballClub,Player,User,Like
 from .forms import PlayerForm
@@ -10,7 +11,12 @@ from .forms import PlayerForm
 # Create your views here.
 
 def index(request):
-    return render(request,"index.html")
+    if request.user.is_authenticated:
+        user = request.user
+        liked_clubs = Like.objects.filter(user=user)
+        return render(request,"index.html",{"liked_clubs":liked_clubs})
+    else:    
+        return render(request,"index.html",{})
 
 def clubs_list(request):
     clubs = FootballClub.objects.all().order_by('networth').reverse()
@@ -88,6 +94,32 @@ def like_club(request,club_id):
 
     return JsonResponse({'liked':True}) 
     
+def like_player(request):
+    if request.method == 'POST':
+        player_id = request.POST.get("player_id")
+        user = request.user
+        
+        #first checking if the player exists and user is authenticated
+        try:
+            player = Player.objects.get(id=player_id)
+        except Player.DoesNotExist:
+            return JsonResponse({"error" : "Player Not Found"})
+        
+        if user.is_authenticated:
+            likes = Like.objects.filter(user=user,liked_player=player)
+            if likes.exists():
+                likes.delete()
+                liked = False
+            else :
+                like = Like(user=user,liked_player=player)
+                like.save()
+                liked = True
+                
+            return JsonResponse({"liked":liked})
+        else:
+            return JsonResponse({"error":"User is not authenticated"})
+    return JsonResponse({"error":"Invalid request"})
+
 def aboutus(request):
     return render(request,"aboutus.html")
 

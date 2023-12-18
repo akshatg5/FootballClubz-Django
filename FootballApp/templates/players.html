@@ -22,9 +22,33 @@
             left: -10px; 
             right: -10px; 
             bottom: -10px; 
-            background-color: #add8e6; /* Light blue color */
-            z-index: -1; /* Place it behind the main rectangle */
+            background-color: #add8e6;
+            z-index: -1;
         }
+
+        .players-h{
+            margin-top: 2%;
+            width: 25%;
+            display: block;
+            padding: 0.1%;
+            margin-left: auto; 
+            margin-right: auto;
+            background-color: rgb(1, 19, 36);
+            text-align: center;
+            position: relative;
+        }
+
+        .players-h::before {
+            content: "";
+            position: absolute;
+            top: 25px; 
+            left: -10px; 
+            right: -10px; 
+            bottom: -10px; 
+            background-color: #add8e6;
+            z-index: -1;
+        }
+
         button {
             background-color: rgb(1, 19, 36) ;
             display: flex;
@@ -169,6 +193,13 @@
                 <p>{{ player.nationality }} </p>
                 <p>{{ player.football_club }}</p>
                 <p>{{ player.position }}</p>
+                {% if user.is_authenticated %}
+                <form id="like-player-form" action="{% url 'like_player' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="player_id" value="{{ player.id }}">
+                    <button id="like-player-btn" type="button" data-liked="{{ player_liked_by_user }}">Like</button>
+                </form>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -223,6 +254,38 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $("#like-player-btn").on("click",function() {
+            var button = $(this);
+            var playerId = $("input[name='player_id']").val();
+            var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+            var isLiked = button.attr("data-liked") === "true";
+
+            //Sending AJAX request to backend to like/dislike
+            $.ajax({
+                type:"POST",
+                url:$("#like-player-form").attr("action"),
+                data: {
+                    player_id : playerId,
+                    like: isLiked ? "dislike" : "like",
+                    csrfmiddlewaretoken:csrfToken
+                },
+                success: function(response) {
+                    if (response.liked) {
+                        button.attr("data-liked","true");
+                        button.text('Dislike');
+                    } else {
+                        button.attr("data-liked","false");
+                        button.text('Like');
+                    }
+                },
+                error : function() {
+                    alert("Error liking/disliking!")
+                }
+            })
+        })
+    })
+
     function showForm() {
         var form = document.getElementById('addPlayerForm');
         if (form.style.display === 'none' || form.style.display === '') {
@@ -253,6 +316,8 @@
             }
         });
     }
+
+
 </script>
 {% include 'footer.html' %}
 {% endblock %}

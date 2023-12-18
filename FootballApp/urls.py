@@ -13,6 +13,7 @@ urlpatterns = [
     path("club/<int:club_id>/",views.club_page,name="club_page"),
     path('club/<int:club_id>/like/',views.like_club,name="like_club"),
     path('submit_club/',views.submit_club,name="submit_club"),
+    path('like_player/',views.like_player,name="like_player"),
     path('add_player/',views.add_player,name="add_player")
 ]
 
